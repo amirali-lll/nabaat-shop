@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from django.db.models import Q
 
 @admin.register(Accessory)
 class AccessoryAdmin(admin.ModelAdmin):
@@ -84,10 +85,13 @@ class OrderAdmin(admin.ModelAdmin):
     def total_cost(self, obj):
         return obj.get_total_cost()
     
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(Q(support=request.user) | Q(support__isnull=True))
+        
     
     
-@admin.register(Address)
-class AddressAdmin(admin.ModelAdmin):
-    list_display = ['city', 'address', 'postal_code', 'created_at', 'updated_at']
-    search_fields = ['city', 'address', 'postal_code']
-    list_filter = ['city']
+\
