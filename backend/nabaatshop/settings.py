@@ -198,6 +198,9 @@ JAZZMIN_SETTINGS = {
         "authentication.user": "fas fa-user",
         "auth.Group": "fas fa-users",
         "store": "fas fa-store",
+        
+        "store.Address": "fas fa-home",
+        "store.Customer": "fas fa-user-astronaut",
         "store.Plant": "fas fa-leaf",
         "store.Order": "fas fa-shopping-cart",
         "store.Accessory": "fas fa-dolly",
