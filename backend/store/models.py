@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 
-
 class Accessory(Model):
     name         = models.CharField(max_length=255)
     description  = models.TextField(blank=True,null=True)
@@ -129,6 +128,17 @@ class Rate(Model):
 
 
 
+class CustomerInfo(Model):
+    name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=15)
+    email = models.EmailField(blank=True,null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) -> str:
+        return self.name
+
 
 class Order(Model):
 
@@ -144,9 +154,8 @@ class Order(Model):
         (STATUS_RETURNED,_('Returned')),
         (STATUS_COMPLETED,_('Completed')),
     ]
-    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=STATUS_SUBMITTED)
-
-    support = models.ForeignKey(User,on_delete=models.SET_NULL,related_name='orders',null=True,blank=True)
+    status   = models.CharField(max_length=1,choices=STATUS_CHOICES,default=STATUS_SUBMITTED)
+    support  = models.ForeignKey(User,on_delete=models.SET_NULL,related_name='orders',null=True,blank=True)
 
     # address        - FK from OrderAddress
     # payment_images - FK from OrderPaymentImage
@@ -166,7 +175,7 @@ class OrderItem(Model):
     product    = models.ForeignKey('Product',on_delete=models.SET_NULL,related_name='order_items',null=True)
     quantity   = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=11,decimal_places=0)
-    unit_cost       = models.DecimalField(max_digits=11,decimal_places=0) # calculated from product
+    unit_cost  = models.DecimalField(max_digits=11,decimal_places=0) # calculated from product
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -212,7 +221,7 @@ class OrderPaymentImage(Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class OrderAddress(Model):
+class Address(Model):
     order = models.OneToOneField(Order,on_delete=models.CASCADE,related_name='address')
     city = models.CharField(max_length=255)
     address = models.TextField()

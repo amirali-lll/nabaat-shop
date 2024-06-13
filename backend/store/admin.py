@@ -34,10 +34,14 @@ class OrderItemInline(admin.StackedInline):
     extra = 0
     readonly_fields = ['unit_cost', 'unit_price']
 
-class OrderAddressInline(admin.StackedInline):
-    model = OrderAddress
-    extra = 1
-
+class AddressInline(admin.StackedInline):
+    model = Address
+    extra = 0
+    
+class UserInline(admin.StackedInline):
+    model = User
+    can_delete = False
+    verbose_name_plural = 'User'
 
 class OrderPaymentImageInline(admin.StackedInline):
     model = OrderPaymentImage
@@ -61,4 +65,24 @@ class ProductAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['status', 'created_at', 'updated_at']
     list_filter = ['status']
-    inlines = [OrderItemInline, OrderAddressInline, OrderPaymentImageInline]
+    inlines = [OrderItemInline, OrderPaymentImageInline]
+    autocomplete_fields = ['address', 'customer']
+    
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ['user', 'created_at', 'updated_at']
+    inlines = [AddressInline]
+    search_fields = ['user__username','user__email','user__first_name','user__last_name']
+    
+    
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ['customer', 'city', 'address', 'postal_code', 'created_at', 'updated_at']
+    search_fields = ['city', 'address', 'postal_code']
+    list_filter = ['city']
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "customer":
+            kwargs["queryset"] = Customer.objects.filter(user=request.user)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
