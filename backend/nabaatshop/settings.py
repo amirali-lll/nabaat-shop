@@ -18,9 +18,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = os.environ.get('DEBUG','False')
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS=[
+    'https://*.fiust.ir',
+    'https://*.nabaat.shop',
+    ]
 
 
 # Application definition
