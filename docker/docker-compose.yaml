@@ -14,7 +14,7 @@ services:
     restart: always
     volumes:
       - ../backend:/app
-      - /var/www/nabaat:/var/www/nabaat
+      - /var/www/nabaatshop:/var/www/nabaatshop
     depends_on:
       - db
 
