@@ -169,7 +169,9 @@ class Order(Model):
 
 
     def __str__(self) -> str:
-        return self.status + ' - ' + str(self.created_at)
+        first_name = self.customer.first_name if self.customer else _('Anonymous')
+        last_name = self.customer.last_name if self.customer else _('User')
+        return f"{first_name} {last_name} - {self.get_total_price()} - {self.status}"
     
     def get_total_price(self):
         return sum([item.unit_price * item.quantity for item in self.order_items.all()])
