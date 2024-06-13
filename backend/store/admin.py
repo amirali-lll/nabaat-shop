@@ -91,7 +91,3 @@ class OrderAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(Q(support=request.user) | Q(support__isnull=True))
-        
-    
-    
-\
