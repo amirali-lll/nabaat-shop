@@ -128,16 +128,17 @@ class Rate(Model):
 
 
 
-class CustomerInfo(Model):
-    name = models.CharField(max_length=255)
+class Customer(Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
-    email = models.EmailField(blank=True,null=True)
+    email = models.EmailField(blank=True,null=True) 
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self) -> str:
-        return self.name
+        return self.first_name + ' ' + self.last_name
 
 
 class Order(Model):
@@ -156,6 +157,7 @@ class Order(Model):
     ]
     status   = models.CharField(max_length=1,choices=STATUS_CHOICES,default=STATUS_SUBMITTED)
     support  = models.ForeignKey(User,on_delete=models.SET_NULL,related_name='orders',null=True,blank=True)
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE,related_name='orders',blank=True,null=True)
 
     # address        - FK from OrderAddress
     # payment_images - FK from OrderPaymentImage
@@ -168,6 +170,12 @@ class Order(Model):
 
     def __str__(self) -> str:
         return self.status + ' - ' + str(self.created_at)
+    
+    def get_total_price(self):
+        return sum([item.unit_price * item.quantity for item in self.order_items.all()])
+    
+    def get_total_cost(self):
+        return sum([item.unit_cost * item.quantity for item in self.order_items.all()])
 
 
 class OrderItem(Model):
