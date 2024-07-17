@@ -25,6 +25,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS=[
     'https://*.fiust.ir',
     'https://*.nabaat.shop',
+    'https://*.nabaat-shop.ir'
     ]
 
 
