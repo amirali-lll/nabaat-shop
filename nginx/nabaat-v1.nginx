@@ -11,6 +11,8 @@ server {
     ssl_certificate /etc/nginx/ssl/fiust.ir.crt;
     ssl_certificate_key /etc/nginx/ssl/fiust.ir.key;
 
+    client_max_body_size 20M; # Adjust the size as needed
+
     location /api/v1/static/ {
         alias /var/www/nabaatshop/static/;
     }
