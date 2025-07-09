@@ -12,7 +12,7 @@ services:
       
     restart: unless-stopped
     volumes:
-      - ../backend:/app
+      - ./backend:/app
       - /var/www/nabaatshop:/var/www/nabaatshop
     networks:
       - shared-db 
