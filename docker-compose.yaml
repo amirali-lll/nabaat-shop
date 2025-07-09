@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ./backend-entrypoint.sh
+    ports:
+      - 8020:8000
+    environment:
+      - DEBUG=false
+      
+    restart: unless-stopped
+    volumes:
+      - ../backend:/app
+      - /var/www/nabaatshop:/var/www/nabaatshop
+    networks:
+      - shared-db 
+
+
+
+networks:
+  shared-db:
+    external: true
