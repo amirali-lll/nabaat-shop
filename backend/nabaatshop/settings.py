@@ -6,6 +6,8 @@ from environ import Env
 env = Env()
 Env.read_env()
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 VERSION  = "1"
 
